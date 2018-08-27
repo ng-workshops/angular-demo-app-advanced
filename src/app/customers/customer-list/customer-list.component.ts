@@ -5,19 +5,9 @@ import {
   ChangeDetectionStrategy
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { Router } from '@angular/router';
-import { merge, Observable, Subject } from 'rxjs';
-import {
-  debounceTime,
-  distinctUntilChanged,
-  map,
-  startWith,
-  switchMap,
-  withLatestFrom,
-  takeUntil
-} from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
 import { Customer } from '../customer.model';
-import { CustomerService } from '../customer.service';
 import { Store } from '@ngrx/store';
 import { CustomerState } from '../store/reducers/customer.reducer';
 import {
@@ -43,14 +33,8 @@ export class CustomerListComponent implements OnInit, OnDestroy {
   searchTerm = new FormControl();
 
   private destroy$ = new Subject();
-  private search$: Observable<string>;
-  private reload$ = new Subject();
 
-  constructor(
-    private router: Router,
-    private customerService: CustomerService,
-    private store: Store<CustomerState>
-  ) {}
+  constructor(private store: Store<CustomerState>) {}
 
   ngOnInit() {
     this.searchTerm.valueChanges
