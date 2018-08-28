@@ -86,6 +86,10 @@ import { CustomerListComponent } from './customer-list.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { reducer, CustomerState } from '../store/reducers/customer.reducer';
 import { StoreModule, Store } from '@ngrx/store';
+import {
+  LoadCustomers,
+  SearchCustomer
+} from '../store/actions/customer.actions';
 
 describe('CustomerListComponent', () => {
   let component: CustomerListComponent;
@@ -117,10 +121,9 @@ describe('CustomerListComponent', () => {
   describe('GIVEN the component is initialized', () => {
     it('should load all customers after init', () => {
       expect(component).toBeTruthy();
-      // expect(store.dispatch).toHaveBeenCalledWith({
-      //   type: CustomerActionTypes.LoadCustomers
-      // });
-      expect(store.dispatch).toHaveBeenCalled();
+
+      const expected = new LoadCustomers();
+      expect(store.dispatch).toHaveBeenCalledWith(expected);
     });
 
     it('should should load new customers when search input changes', fakeAsync(() => {
@@ -128,14 +131,11 @@ describe('CustomerListComponent', () => {
       expect(component.searchTerm).toBeDefined();
 
       component.searchTerm.setValue('Simp');
+      const expected = new SearchCustomer('Simp');
 
       tick(500);
 
-      // expect(store.dispatch).toHaveBeenCalledWith({
-      //   type: CustomerActionTypes.SearchCustomer,
-      //   payload: 'Simp'
-      // });
-      expect(store.dispatch).toHaveBeenCalled();
+      expect(store.dispatch).toHaveBeenCalledWith(expected);
     }));
   });
 });
