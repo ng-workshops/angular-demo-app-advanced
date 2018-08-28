@@ -1,5 +1,6 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { CustomerState } from '../reducers/customer.reducer';
+import { getRouterState } from '../../../store';
 /**
  * The createFeatureSelector function selects a piece of state from the root of the state object.
  * This is used for selecting feature states that are loaded eagerly or lazily.
@@ -26,9 +27,17 @@ export const getSelectedCustomerId = createSelector(
   getCustomersStore,
   store => store.selectedCustomerId
 );
+
 export const getSelectedCustomer = createSelector(
   getCustomers,
   getSelectedCustomerId,
   (customers, selectedCustomerId) =>
     customers.find(c => c.id === selectedCustomerId)
+);
+
+export const getSelectedCustomerFromRouter = createSelector(
+  getCustomers,
+  getRouterState,
+  (customers, router) =>
+    customers.find(c => c.id === +router.state.params.id) || {}
 );

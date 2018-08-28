@@ -1,4 +1,9 @@
-import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  ChangeDetectionStrategy
+} from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Customer } from '../customer.model';
@@ -12,8 +17,12 @@ import {
   AddCustomer,
   UpdateCustomer
 } from '../store/actions/customer.actions';
-import { getSelectedCustomer } from '../store/selectors/customer.selectors';
+import {
+  getSelectedCustomer,
+  getSelectedCustomerFromRouter
+} from '../store/selectors/customer.selectors';
 import { Subject } from 'rxjs';
+import { Go } from '../../core/router/router.actions';
 
 @Component({
   selector: 'app-customer-form',
@@ -37,7 +46,8 @@ export class CustomerFormComponent implements OnInit, OnDestroy {
     this.form = Customer.toFormGroup();
 
     this.store
-      .select(getSelectedCustomer)
+      // .select(getSelectedCustomer)
+      .select(getSelectedCustomerFromRouter)
       .pipe(
         filter(customer => !!customer),
         takeUntil(this.destroy$)
@@ -46,11 +56,11 @@ export class CustomerFormComponent implements OnInit, OnDestroy {
         this.form.patchValue(customer);
       });
 
-    const id = this.route.snapshot.params.id;
+    // const id = this.route.snapshot.params.id;
 
-    if (id !== 'new') {
-      this.store.dispatch(new SelectCustomer(parseInt(id, 10)));
-    }
+    // if (id !== 'new') {
+    //   this.store.dispatch(new SelectCustomer(parseInt(id, 10)));
+    // }
   }
 
   ngOnDestroy() {
@@ -65,6 +75,7 @@ export class CustomerFormComponent implements OnInit, OnDestroy {
   }
 
   cancel() {
-    this.router.navigate(['customers']);
+    // this.router.navigate(['customers']);
+    this.store.dispatch(new Go({ path: ['customers'] }));
   }
 }
