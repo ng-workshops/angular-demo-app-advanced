@@ -12,8 +12,11 @@ import { reducer, CustomerState } from '../store/reducers/customer.reducer';
 import { StoreModule, Store } from '@ngrx/store';
 import {
   LoadCustomers,
-  SearchCustomer
+  SearchCustomer,
+  LoadCustomersSuccess
 } from '../store/actions/customer.actions';
+
+const customerMockData = require('../../../../server/mocks/customers/customers.json');
 
 describe('CustomerListComponent', () => {
   let component: CustomerListComponent;
@@ -37,17 +40,26 @@ describe('CustomerListComponent', () => {
   }));
 
   beforeEach(() => {
+    // init store
+    store.dispatch(new LoadCustomersSuccess(customerMockData));
+
     fixture = TestBed.createComponent(CustomerListComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
   describe('GIVEN the component is initialized', () => {
-    it('should load all customers after init', () => {
+    it('should load all customers after init', done => {
       expect(component).toBeTruthy();
 
       const expected = new LoadCustomers();
       expect(store.dispatch).toHaveBeenCalledWith(expected);
+
+      component.customers$.subscribe(c => {
+        expect(c.length).toBe(3);
+        expect(c).toEqual(customerMockData);
+        done();
+      });
     });
 
     it('should should load new customers when search input changes', fakeAsync(() => {

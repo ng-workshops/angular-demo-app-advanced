@@ -7,6 +7,7 @@ import { Customer } from '../../customer.model';
 
 export interface CustomerState {
   loading: boolean;
+  loaded: boolean;
   customers: Customer[];
   selectedCustomerId?: number;
   search?: string;
@@ -14,6 +15,7 @@ export interface CustomerState {
 
 export const initialState: CustomerState = {
   loading: false,
+  loaded: false,
   customers: []
 };
 
@@ -34,6 +36,7 @@ export function reducer(
       return {
         ...state,
         loading: false,
+        loaded: true,
         selectedCustomerId: null,
         customers
       };
@@ -42,7 +45,8 @@ export function reducer(
     case CustomerActionTypes.LoadCustomersFail: {
       return {
         ...state,
-        loading: false
+        loading: false,
+        loaded: false
       };
     }
 

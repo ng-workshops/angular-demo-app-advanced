@@ -8,7 +8,7 @@ import { FormControl } from '@angular/forms';
 import { Observable, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
 import { Customer } from '../customer.model';
-import { Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 import { CustomerState } from '../store/reducers/customer.reducer';
 import {
   LoadCustomers,
@@ -46,8 +46,8 @@ export class CustomerListComponent implements OnInit, OnDestroy {
       .subscribe(search => this.store.dispatch(new SearchCustomer(search)));
 
     // set up selectors
-    this.loading$ = this.store.select(getLoading);
-    this.customers$ = this.store.select(getCustomers);
+    this.loading$ = this.store.pipe(select(getLoading));
+    this.customers$ = this.store.pipe(select(getCustomers));
 
     this.store.dispatch(new LoadCustomers());
   }

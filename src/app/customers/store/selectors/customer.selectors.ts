@@ -41,3 +41,8 @@ export const getSelectedCustomerFromRouter = createSelector(
   (customers, router) =>
     customers.find(c => c.id === +router.state.params.id) || {}
 );
+
+export const getLoaded = createSelector(
+  getCustomersStore,
+  store => store.loaded
+);

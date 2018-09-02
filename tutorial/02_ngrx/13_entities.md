@@ -12,13 +12,13 @@ export interface CustomerState {
 }
 
 case CustomerActionTypes.LoadCustomersSuccess: {
-  const customers = action.payload.reduce((acc, curr) => ({ ...acc, [curr.id]: curr }), {});
+  const customersEntities = action.payload.reduce((acc, curr) => ({ ...acc, [curr.id]: curr }), {});
 
       return {
         ...state,
         loading: false,
         selectedCustomerId: null,
-        customers
+        customersEntities
       };
     }
 ```
@@ -27,6 +27,6 @@ case CustomerActionTypes.LoadCustomersSuccess: {
 
 ```ts
 export const getCustomers = createSelector(getCustomersStore, store =>
-  Object.keys(store.customers).map(key => store.customers[key])
+  Object.keys(store.customersEntities).map(key => store.customersEntities[key])
 );
 ```
