@@ -1,35 +1,28 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
   MatButtonModule,
+  MatCardModule,
   MatCheckboxModule,
+  MatIconModule,
+  MatInputModule,
+  MatProgressBarModule,
   MatRadioModule,
   MatSnackBarModule,
-  MatInputModule,
-  MatIconModule,
-  MatCardModule,
-  MatProgressBarModule
+  MatTableModule
 } from '@angular/material';
-
 import { CanClickDirective } from './directives/can-click.directive';
-import { JoinPipe } from './pipes/join.pipe';
+import { InputFloatComponent } from './input-float/input-float.component';
+import { InputFloatDirective } from './input-float/input-float.directive';
 import { InputIntegerComponent } from './input-integer/input-integer.component';
 import { IntegerValidatorDirective } from './input-integer/integer.validator.directive';
-import { ModalComponent } from './modal/modal.component';
 import { HostElementService } from './modal/host/host-element.service';
-import { InputFloatDirective } from './input-float/input-float.directive';
-import { InputFloatComponent } from './input-float/input-float.component';
+import { ModalComponent } from './modal/modal.component';
+import { JoinPipe } from './pipes/join.pipe';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    MatInputModule,
-    FormsModule,
-    MatCardModule,
-    MatButtonModule,
-    MatProgressBarModule
-  ],
+  imports: [CommonModule, MatInputModule, FormsModule, MatCardModule, MatButtonModule, MatProgressBarModule],
   declarations: [
     CanClickDirective,
     InputIntegerComponent,
@@ -56,6 +49,7 @@ import { InputFloatComponent } from './input-float/input-float.component';
     MatSnackBarModule,
     MatCardModule,
     MatProgressBarModule,
+    MatTableModule,
     CanClickDirective
   ],
   providers: [HostElementService],

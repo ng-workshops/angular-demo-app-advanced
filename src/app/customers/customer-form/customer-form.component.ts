@@ -1,9 +1,4 @@
-import {
-  Component,
-  OnInit,
-  OnDestroy,
-  ChangeDetectionStrategy
-} from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Customer } from '../customer.model';
@@ -12,15 +7,8 @@ import { CustomerService } from '../customer.service';
 import { MatSnackBar } from '@angular/material';
 import { Store } from '@ngrx/store';
 import { CustomerState } from '../store/reducers/customer.reducer';
-import {
-  SelectCustomer,
-  AddCustomer,
-  UpdateCustomer
-} from '../store/actions/customer.actions';
-import {
-  getSelectedCustomer,
-  getSelectedCustomerFromRouter
-} from '../store/selectors/customer.selectors';
+import { SelectCustomer, AddCustomer, UpdateCustomer } from '../store/actions/customer.actions';
+import { getSelectedCustomer, getSelectedCustomerFromRouter } from '../store/selectors/customer.selectors';
 import { Subject } from 'rxjs';
 import { Go } from '../../core/router/router.actions';
 
@@ -69,9 +57,7 @@ export class CustomerFormComponent implements OnInit, OnDestroy {
 
   submit() {
     const data = this.form.getRawValue();
-    this.store.dispatch(
-      data.id ? new UpdateCustomer(data) : new AddCustomer(data)
-    );
+    this.store.dispatch(data.id ? new UpdateCustomer(data) : new AddCustomer(data));
   }
 
   cancel() {

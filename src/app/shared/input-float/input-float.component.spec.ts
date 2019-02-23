@@ -12,9 +12,8 @@ describe('InputFloatComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [FormsModule, MatInputModule, NoopAnimationsModule],
-      declarations: [ InputFloatComponent ]
-    })
-    .compileComponents();
+      declarations: [InputFloatComponent]
+    }).compileComponents();
   }));
 
   beforeEach(() => {

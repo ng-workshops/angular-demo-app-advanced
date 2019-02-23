@@ -59,10 +59,7 @@ describe('CustomersReducer', () => {
 
       expect(state.loading).toEqual(false);
       expect(state.customers.length).toEqual(2);
-      expect(state.customers).toEqual([
-        customerMockData[0],
-        customerMockData[2]
-      ]);
+      expect(state.customers).toEqual([customerMockData[0], customerMockData[2]]);
     });
   });
 });

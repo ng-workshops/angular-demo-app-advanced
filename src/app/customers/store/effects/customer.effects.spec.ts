@@ -4,11 +4,7 @@ import { ReplaySubject, of } from 'rxjs';
 import { CustomerEffects } from './customer.effects';
 import { CustomerService } from '../../customer.service';
 import { MatSnackBarModule } from '@angular/material';
-import {
-  LoadCustomers,
-  LoadCustomersSuccess,
-  SearchCustomer
-} from '../actions/customer.actions';
+import { LoadCustomers, LoadCustomersSuccess, SearchCustomer } from '../actions/customer.actions';
 import { ModalService } from '../../../shared/modal/modal.service';
 import { HostElementService } from '../../../shared/modal/host/host-element.service';
 const customerMockData = require('../../../../../server/mocks/customers/customers.json');

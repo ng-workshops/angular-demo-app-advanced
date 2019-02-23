@@ -20,12 +20,6 @@ import { CustomerStatusPipe } from './customer-status.pipe';
     StoreModule.forFeature('customer', fromCustomer.reducer),
     EffectsModule.forFeature([CustomerEffects])
   ],
-  declarations: [
-    CustomerComponent,
-    CustomerDetailsComponent,
-    CustomerListComponent,
-    CustomerFormComponent,
-    CustomerStatusPipe
-  ]
+  declarations: [CustomerComponent, CustomerDetailsComponent, CustomerListComponent, CustomerFormComponent, CustomerStatusPipe]
 })
-export class CustomersModule { }
+export class CustomersModule {}

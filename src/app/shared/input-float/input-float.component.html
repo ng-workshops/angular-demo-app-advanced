@@ -1,6 +1,13 @@
 <mat-form-field>
-  <input #field="ngModel" type="text" matInput inputFloat [(ngModel)]="input" (ngModelChange)="parseToFloat($event)"
-    placeholder="{{placeholder}}" />
+  <input
+    #field="ngModel"
+    type="text"
+    matInput
+    inputFloat
+    [(ngModel)]="input"
+    (ngModelChange)="parseToFloat($event)"
+    placeholder="{{ placeholder }}"
+  />
   <span matPrefix>$&nbsp;</span>
 
   <mat-error *ngIf="field.invalid">

@@ -7,11 +7,7 @@ import { InfoItemComponent } from './info-item/info-item.component';
 import { FormsModule } from '@angular/forms';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    HomeRoutingModule
-  ],
-  declarations: [HomeComponent, InfoBoxComponent, InfoItemComponent],
+  imports: [CommonModule, FormsModule, HomeRoutingModule],
+  declarations: [HomeComponent, InfoBoxComponent, InfoItemComponent]
 })
-export class HomeModule { }
+export class HomeModule {}

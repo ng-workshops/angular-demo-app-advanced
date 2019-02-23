@@ -16,11 +16,7 @@ export class HomeComponent {
   @ViewChild('child')
   private child: InfoBoxComponent;
 
-  constructor(
-    private messageService: MessageService,
-    private hostElement: ViewContainerRef,
-    private modal: ModalService
-  ) {}
+  constructor(private messageService: MessageService, private hostElement: ViewContainerRef, private modal: ModalService) {}
 
   changeChild() {
     this.message = new Date().toISOString();
@@ -40,10 +36,7 @@ export class HomeComponent {
   }
 
   openModal() {
-    const modal = this.modal.open(
-      { message: this.name, title: 'My name is', type: 'primary' },
-      this.hostElement
-    );
+    const modal = this.modal.open({ message: this.name, title: 'My name is', type: 'primary' }, this.hostElement);
 
     modal.close.subscribe(_ => {
       console.log('MODAL closed');

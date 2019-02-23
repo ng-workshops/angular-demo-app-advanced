@@ -1,8 +1,5 @@
 import { Action } from '@ngrx/store';
-import {
-  CustomerActions,
-  CustomerActionTypes
-} from '../actions/customer.actions';
+import { CustomerActions, CustomerActionTypes } from '../actions/customer.actions';
 import { Customer } from '../../customer.model';
 
 export interface CustomerState {
@@ -19,10 +16,7 @@ export const initialState: CustomerState = {
   customers: []
 };
 
-export function reducer(
-  state = initialState,
-  action: CustomerActions
-): CustomerState {
+export function reducer(state = initialState, action: CustomerActions): CustomerState {
   switch (action.type) {
     case CustomerActionTypes.LoadCustomers:
       return {

@@ -1,20 +1,10 @@
-import {
-  async,
-  ComponentFixture,
-  TestBed,
-  fakeAsync,
-  tick
-} from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 
 import { CustomerListComponent } from './customer-list.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { reducer, CustomerState } from '../store/reducers/customer.reducer';
 import { StoreModule, Store } from '@ngrx/store';
-import {
-  LoadCustomers,
-  SearchCustomer,
-  LoadCustomersSuccess
-} from '../store/actions/customer.actions';
+import { LoadCustomers, SearchCustomer, LoadCustomersSuccess } from '../store/actions/customer.actions';
 
 const customerMockData = require('../../../../server/mocks/customers/customers.json');
 

@@ -1,10 +1,10 @@
 <div style="border: 1px dotted royalblue">
   <ng-content select="[header]"></ng-content>
-  <p>@Input() Message: {{message}}</p>
-  <p>@Input() Name: {{name}}</p>
+  <p>@Input() Message: {{ message }}</p>
+  <p>@Input() Name: {{ name }}</p>
 
   <p>
-    <input type="text" #text/>
+    <input type="text" #text />
     <button (click)="reply(text.value)">Message to parent</button>
   </p>
   <ng-content select="footer"></ng-content>

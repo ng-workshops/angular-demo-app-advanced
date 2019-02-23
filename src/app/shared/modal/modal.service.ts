@@ -1,8 +1,4 @@
-import {
-  ComponentFactoryResolver,
-  Injectable,
-  ViewContainerRef
-} from '@angular/core';
+import { ComponentFactoryResolver, Injectable, ViewContainerRef } from '@angular/core';
 
 import { ModalComponent } from './modal.component';
 import { ModalData } from './modal.model';
@@ -12,10 +8,7 @@ import { map } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class ModalService {
-  constructor(
-    private componentFactoryResolver: ComponentFactoryResolver,
-    private hostElementService: HostElementService
-  ) {}
+  constructor(private componentFactoryResolver: ComponentFactoryResolver, private hostElementService: HostElementService) {}
 
   open(data: ModalData, host: ViewContainerRef): ModalComponent {
     data.type = data.type || 'primary';
@@ -23,17 +16,13 @@ export class ModalService {
   }
 
   openGlobal(data: ModalData): Observable<ModalComponent> {
-    return this.hostElementService.hostElement$.pipe(
-      map(host => this.createModal(data, host))
-    );
+    return this.hostElementService.hostElement$.pipe(map(host => this.createModal(data, host)));
   }
 
   private createModal(data: ModalData, host: ViewContainerRef): ModalComponent {
     host.clear();
 
-    const modalFactory = this.componentFactoryResolver.resolveComponentFactory(
-      ModalComponent
-    );
+    const modalFactory = this.componentFactoryResolver.resolveComponentFactory(ModalComponent);
     const modal = host.createComponent(modalFactory);
 
     modal.instance.modal = data;

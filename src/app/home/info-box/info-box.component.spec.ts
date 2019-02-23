@@ -8,9 +8,8 @@ describe('InfoBoxComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ InfoBoxComponent ]
-    })
-    .compileComponents();
+      declarations: [InfoBoxComponent]
+    }).compileComponents();
   }));
 
   beforeEach(() => {

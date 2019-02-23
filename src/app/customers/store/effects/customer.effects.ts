@@ -18,10 +18,7 @@ export class CustomerEffects {
    */
   @Effect()
   loadCustomers$ = this.actions$.pipe(
-    ofType(
-      fromActions.CustomerActionTypes.LoadCustomers,
-      fromActions.CustomerActionTypes.SearchCustomer
-    ),
+    ofType(fromActions.CustomerActionTypes.LoadCustomers, fromActions.CustomerActionTypes.SearchCustomer),
     map((action: any) => action.payload),
     switchMap(search => {
       return this.customerService.getAll(search).pipe(
@@ -81,14 +78,8 @@ export class CustomerEffects {
    */
   @Effect()
   saveCustomersSuccess$ = this.actions$.pipe(
-    ofType(
-      fromActions.CustomerActionTypes.AddCustomerSuccess,
-      fromActions.CustomerActionTypes.UpdateCustomerSuccess
-    ),
-    map(
-      (action: fromActions.AddCustomerSuccess | fromActions.UpdateCustomer) =>
-        action.payload
-    ),
+    ofType(fromActions.CustomerActionTypes.AddCustomerSuccess, fromActions.CustomerActionTypes.UpdateCustomerSuccess),
+    map((action: fromActions.AddCustomerSuccess | fromActions.UpdateCustomer) => action.payload),
     tap(customer => {
       this.snackBar.open(`Customer ${customer.name} saved successfully.`, '', {
         duration: 2000
@@ -119,7 +110,7 @@ export class CustomerEffects {
 
       return this.modalService.openGlobal({
         title: 'App error',
-        message: error && error.message || 'The error message',
+        message: (error && error.message) || 'The error message',
         type: 'warn'
       });
     })

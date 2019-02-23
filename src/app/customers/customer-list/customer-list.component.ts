@@ -1,24 +1,12 @@
-import {
-  Component,
-  OnInit,
-  OnDestroy,
-  ChangeDetectionStrategy
-} from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Observable, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
 import { Customer } from '../customer.model';
 import { Store, select } from '@ngrx/store';
 import { CustomerState } from '../store/reducers/customer.reducer';
-import {
-  LoadCustomers,
-  DeleteCustomer,
-  SearchCustomer
-} from '../store/actions/customer.actions';
-import {
-  getLoading,
-  getCustomers
-} from '../store/selectors/customer.selectors';
+import { LoadCustomers, DeleteCustomer, SearchCustomer } from '../store/actions/customer.actions';
+import { getLoading, getCustomers } from '../store/selectors/customer.selectors';
 import { Go } from '../../core/router/router.actions';
 
 @Component({

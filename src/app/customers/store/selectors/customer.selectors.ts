@@ -5,9 +5,7 @@ import { getRouterState } from '../../../store';
  * The createFeatureSelector function selects a piece of state from the root of the state object.
  * This is used for selecting feature states that are loaded eagerly or lazily.
  */
-export const getCustomersStore = createFeatureSelector<CustomerState>(
-  'customer'
-);
+export const getCustomersStore = createFeatureSelector<CustomerState>('customer');
 
 /**
  * A selector function is a map function factory. We pass it parameters and it
@@ -31,15 +29,13 @@ export const getSelectedCustomerId = createSelector(
 export const getSelectedCustomer = createSelector(
   getCustomers,
   getSelectedCustomerId,
-  (customers, selectedCustomerId) =>
-    customers.find(c => c.id === selectedCustomerId)
+  (customers, selectedCustomerId) => customers.find(c => c.id === selectedCustomerId)
 );
 
 export const getSelectedCustomerFromRouter = createSelector(
   getCustomers,
   getRouterState,
-  (customers, router) =>
-    customers.find(c => c.id === +router.state.params.id) || {}
+  (customers, router) => customers.find(c => c.id === +router.state.params.id) || {}
 );
 
 export const getLoaded = createSelector(
