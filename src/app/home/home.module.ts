@@ -1,13 +1,14 @@
-import { NgModule } from '@angular/core';
-import { HomeComponent } from './home.component';
-import { HomeRoutingModule } from './home-routing.module';
 import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { MatCardModule } from '@angular/material/card';
+import { HomeRoutingModule } from './home-routing.module';
+import { HomeComponent } from './home.component';
 import { InfoBoxComponent } from './info-box/info-box.component';
 import { InfoItemComponent } from './info-item/info-item.component';
-import { FormsModule } from '@angular/forms';
 
 @NgModule({
-  imports: [CommonModule, FormsModule, HomeRoutingModule],
+  imports: [CommonModule, HomeRoutingModule, FormsModule, MatCardModule],
   declarations: [HomeComponent, InfoBoxComponent, InfoItemComponent]
 })
 export class HomeModule {}

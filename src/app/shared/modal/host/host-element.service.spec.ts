@@ -1,15 +1,12 @@
-import { TestBed, inject } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 
 import { HostElementService } from './host-element.service';
 
 describe('HostElementService', () => {
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      providers: [HostElementService]
-    });
-  });
+  beforeEach(() => TestBed.configureTestingModule({}));
 
-  it('should be created', inject([HostElementService], (service: HostElementService) => {
+  it('should be created', () => {
+    const service: HostElementService = TestBed.get(HostElementService);
     expect(service).toBeTruthy();
-  }));
+  });
 });

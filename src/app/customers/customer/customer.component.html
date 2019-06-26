@@ -1,13 +1,20 @@
 <div class="header">
   <a routerLink="{{ customer?.id }}">
-    <h4>{{ customer?.name }}{{ customer?.firstname ? ', ' + customer?.firstname : '' }}</h4>
+    <h4>
+      {{ customer?.name
+      }}{{ customer?.firstname ? ', ' + customer?.firstname : '' }}
+    </h4>
   </a>
-  <!-- <span><mat-icon>{{customer?.numberOfOrders | customerStatus}}</mat-icon></span> -->
+  <span
+    ><mat-icon>{{ customer?.numberOfOrders | customerStatus }}</mat-icon></span
+  >
 </div>
 <div class="content">
   <span> My hobbies: "{{ customer?.hobbies }}" </span>
   <button mat-icon-button (click)="showMore()">
-    <mat-icon>{{ showDetails ? 'keyboard_arrow_down' : 'keyboard_arrow_right' }}</mat-icon>
+    <mat-icon>{{
+      showDetails ? 'keyboard_arrow_down' : 'keyboard_arrow_right'
+    }}</mat-icon>
   </button>
 </div>
 <div class="details" *ngIf="showDetails">
@@ -19,5 +26,8 @@
   </button>
   <button mat-icon-button (click)="delete(customer?.id)">
     <mat-icon>delete</mat-icon>
+  </button>
+  <button appCanClick mat-icon-button (canClick)="delete(customer?.id)">
+    <mat-icon>visibility_off</mat-icon>
   </button>
 </div>

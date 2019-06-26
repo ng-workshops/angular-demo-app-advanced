@@ -1,85 +1,69 @@
-import { Action } from '@ngrx/store';
-import { CustomerActions, CustomerActionTypes } from '../actions/customer.actions';
+import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
+import { Action, createReducer, on } from '@ngrx/store';
 import { Customer } from '../../customer.model';
+import * as CustomerActions from '../actions/customer.actions';
 
-export interface CustomerState {
+export interface CustomerState extends EntityState<Customer> {
+  // additional entity state properties
   loading: boolean;
   loaded: boolean;
-  customers: Customer[];
   selectedCustomerId?: number;
   search?: string;
 }
 
-export const initialState: CustomerState = {
+export const adapter: EntityAdapter<Customer> = createEntityAdapter<Customer>();
+
+export const initialState: CustomerState = adapter.getInitialState({
+  // additional entity state properties
   loading: false,
-  loaded: false,
-  customers: []
-};
+  loaded: false
+});
 
-export function reducer(state = initialState, action: CustomerActions): CustomerState {
-  switch (action.type) {
-    case CustomerActionTypes.LoadCustomers:
-      return {
-        ...state,
-        loading: true
-      };
+const customerReducer = createReducer(
+  initialState,
 
-    case CustomerActionTypes.LoadCustomersSuccess: {
-      const customers = action.payload;
+  on(
+    CustomerActions.loadCustomers,
+    CustomerActions.loadCustomersFail,
+    state => ({ ...state, loading: true, loaded: false })
+  ),
+  on(CustomerActions.loadCustomersSuccess, (state, { customers }) =>
+    adapter.addAll(customers, {
+      ...state,
+      loading: false,
+      loaded: true,
+      selectedCustomerId: null
+    })
+  ),
+  on(CustomerActions.selectCustomer, (state, { id }) => ({
+    ...state,
+    selectedCustomerId: id
+  })),
+  on(CustomerActions.addCustomerSuccess, (state, { customer }) =>
+    adapter.addOne(customer, state)
+  ),
+  on(CustomerActions.updateCustomerSuccess, (state, { customer }) =>
+    adapter.updateOne(customer, state)
+  ),
+  on(CustomerActions.deleteCustomerSuccess, (state, { id }) =>
+    adapter.removeOne(id, state)
+  ),
+  on(CustomerActions.searchCustomer, (state, { criteria }) => ({
+    ...state,
+    loading: true,
+    loaded: false,
+    search: criteria
+  }))
+);
 
-      return {
-        ...state,
-        loading: false,
-        loaded: true,
-        selectedCustomerId: null,
-        customers
-      };
-    }
-
-    case CustomerActionTypes.LoadCustomersFail: {
-      return {
-        ...state,
-        loading: false,
-        loaded: false
-      };
-    }
-
-    case CustomerActionTypes.SelectCustomer: {
-      const selectedCustomerId = action.payload;
-      return { ...state, selectedCustomerId };
-    }
-
-    case CustomerActionTypes.AddCustomerSuccess: {
-      const newCustomer = action.payload;
-      const customers = [...state.customers, newCustomer];
-
-      return {
-        ...state,
-        customers
-      };
-    }
-
-    case CustomerActionTypes.DeleteCustomerSuccess: {
-      const id = action.payload;
-      const customers = [...state.customers.filter(c => c.id !== id)];
-
-      return {
-        ...state,
-        customers
-      };
-    }
-
-    case CustomerActionTypes.SearchCustomer: {
-      const search = action.payload;
-
-      return {
-        ...state,
-        loading: true,
-        search
-      };
-    }
-
-    default:
-      return state;
-  }
+export function reducer(state: CustomerState | undefined, action: Action) {
+  return customerReducer(state, action);
 }
+
+// get the selectors
+export const {
+  selectIds,
+  selectEntities,
+  selectAll,
+  selectTotal
+} = adapter.getSelectors();

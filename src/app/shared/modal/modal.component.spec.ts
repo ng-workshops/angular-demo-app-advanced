@@ -1,8 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { ModalComponent } from './modal.component';
-import { MatCardModule, MatButtonModule } from '@angular/material';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { ModalComponent } from './modal.component';
 
 describe('ModalComponent', () => {
   let component: ModalComponent;

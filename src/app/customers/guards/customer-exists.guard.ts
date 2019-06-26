@@ -1,12 +1,19 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, ActivatedRouteSnapshot } from '@angular/router';
+import {
+  ActivatedRouteSnapshot,
+  CanActivate,
+  RouterStateSnapshot,
+  UrlTree
+} from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { tap, map, filter, take, switchMap } from 'rxjs/operators';
-
+import { filter, map, switchMap, take, tap } from 'rxjs/operators';
+import { loadCustomers } from '../store/actions/customer.actions';
 import { CustomerState } from '../store/reducers/customer.reducer';
-import * as fromSelectors from '../store/selectors/customer.selectors';
-import * as fromActions from '../store/actions/customer.actions';
+import {
+  getCustomersEntities,
+  getLoaded
+} from '../store/selectors/customer.selectors';
 
 @Injectable({
   providedIn: 'root'
@@ -14,27 +21,34 @@ import * as fromActions from '../store/actions/customer.actions';
 export class CustomerExistsGuard implements CanActivate {
   constructor(private store: Store<CustomerState>) {}
 
-  canActivate(route: ActivatedRouteSnapshot): Observable<boolean> {
+  canActivate(
+    next: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot
+  ):
+    | Observable<boolean | UrlTree>
+    | Promise<boolean | UrlTree>
+    | boolean
+    | UrlTree {
     return this.checkStore().pipe(
       switchMap(() => {
-        const id = parseInt(route.params.id, 10);
+        const id = parseInt(next.params.id, 10);
         return this.hasCustomer(id);
       })
     );
   }
 
   hasCustomer(id: number): Observable<boolean> {
-    return this.store.select(fromSelectors.getCustomers).pipe(
-      map(customers => !!customers.find(c => c.id === id)),
+    return this.store.select(getCustomersEntities).pipe(
+      map(customers => Boolean(customers[id])),
       take(1)
     );
   }
 
   checkStore(): Observable<boolean> {
-    return this.store.select(fromSelectors.getLoaded).pipe(
+    return this.store.select(getLoaded).pipe(
       tap(loaded => {
         if (!loaded) {
-          this.store.dispatch(new fromActions.LoadCustomers());
+          this.store.dispatch(loadCustomers());
         }
       }),
       filter(loaded => loaded),

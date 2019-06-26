@@ -1,8 +1,9 @@
 # 7 Component interaction - Message service
 
-$ ng generate service home/message
+> ng generate service home/message
 
-## home/message.service.ts
+## src/app/home/message.service.ts
+
 ```ts
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
@@ -23,7 +24,8 @@ export class MessageService {
   }
 }
 ```
-## home/info-box/info-box.component.ts
+
+## src/app/home/info-box/info-box.component.ts
 
 ```ts
 import {
@@ -40,7 +42,7 @@ import { MessageService } from '../message.service';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'info-box',
+  selector: 'app-info-box',
   templateUrl: './info-box.component.html',
   styleUrls: ['./info-box.component.scss']
 })
@@ -84,8 +86,9 @@ export class InfoBoxComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnDestroy() {
-    // tslint:disable-next-line:no-unused-expression
-    this.subscription && this.subscription.unsubscribe();
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 
   reply(message?: string) {
@@ -94,22 +97,29 @@ export class InfoBoxComponent implements OnInit, OnChanges, OnDestroy {
 }
 ```
 
-## home/home.component.html
+## src/app/home/home.component.html
 
 ```html
 <p>
   <button (click)="changeChild()">Change Child data</button>
-  <button (click)="child.name = 'Changed BY PARENT'">Change Child via Template Var</button>
+  <button (click)="child.name = 'Changed BY PARENT'">
+    Change Child via Template Var
+  </button>
   <button (click)="processReplyFromCode()">Change Child via ViewChild</button>
   <button (click)="sendMessage()">Send message via service</button>
 </p>
 
-<info-box #child [message]="message" [name]="name" (replyToParent)="processReply($event)"></info-box>
+<app-info-box
+  #child
+  [message]="message"
+  [name]="name"
+  (replyToParent)="processReply($event)"
+></app-info-box>
 
 <pre>Message from Child = {{ reply | json }}</pre>
 ```
 
-## home/home.component.ts
+## src/app/home/home.component.ts
 
 ```ts
 import { Component, ViewChild } from '@angular/core';
@@ -126,7 +136,7 @@ export class HomeComponent {
   name = 'START_';
   reply = '';
 
-  @ViewChild('child')
+  @ViewChild('child', { static: false })
   private child: InfoBoxComponent;
 
   constructor(private messageService: MessageService) {}

@@ -1,20 +1,27 @@
 # 6 Component interaction - @ViewChild()
 
-## home/home.component.html
+## src/app/home/home.component.html
 
 ```html
 <p>
   <button (click)="changeChild()">Change Child data</button>
-  <button (click)="child.name = 'Changed BY PARENT'">Change Child via Template Var</button>
+  <button (click)="child.name = 'Changed BY PARENT'">
+    Change Child via Template Var
+  </button>
   <button (click)="processReplyFromCode()">Change Child via ViewChild</button>
 </p>
 
-<info-box #child [message]="message" [name]="name" (replyToParent)="processReply($event)"></info-box>
+<app-info-box
+  #child
+  [message]="message"
+  [name]="name"
+  (replyToParent)="processReply($event)"
+></app-info-box>
 
 <pre>Message from Child = {{ reply | json }}</pre>
 ```
 
-## home/home.component.ts
+## src/app/home/home.component.ts
 
 ```ts
 import { Component, ViewChild } from '@angular/core';
@@ -30,7 +37,7 @@ export class HomeComponent {
   name = 'START_';
   reply = '';
 
-  @ViewChild('child')
+  @ViewChild('child', { static: false })
   private child: InfoBoxComponent;
 
   changeChild() {

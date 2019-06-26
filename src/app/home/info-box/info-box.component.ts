@@ -1,9 +1,18 @@
-import { Component, OnInit, Input, OnChanges, SimpleChange, Output, EventEmitter, OnDestroy } from '@angular/core';
-import { MessageService } from '../message.service';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  Output,
+  SimpleChange
+} from '@angular/core';
 import { Subscription } from 'rxjs';
+import { MessageService } from '../message.service';
 
 @Component({
-  selector: 'info-box',
+  selector: 'app-info-box',
   templateUrl: './info-box.component.html',
   styleUrls: ['./info-box.component.scss']
 })
@@ -47,8 +56,9 @@ export class InfoBoxComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnDestroy() {
-    // tslint:disable-next-line:no-unused-expression
-    this.subscription && this.subscription.unsubscribe();
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 
   reply(message?: string) {

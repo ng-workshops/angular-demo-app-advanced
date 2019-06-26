@@ -1,6 +1,14 @@
-import { Component, OnInit, Input, HostBinding, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
-import { Customer } from '../customer.model';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  HostBinding,
+  Input,
+  OnInit,
+  Output
+} from '@angular/core';
 import { Router } from '@angular/router';
+import { Customer } from '../customer.model';
 
 @Component({
   selector: 'app-customer',
@@ -9,14 +17,11 @@ import { Router } from '@angular/router';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CustomerComponent implements OnInit {
-  @HostBinding('class.customers')
-  hostStyle = true;
+  @HostBinding('class.customers') hostStyle = true;
 
-  @Input()
-  customer: Customer;
+  @Input() customer: Customer;
 
-  @Output()
-  deleteCustomer = new EventEmitter<number>();
+  @Output() deleteCustomer = new EventEmitter<number>();
 
   showDetails = false;
 

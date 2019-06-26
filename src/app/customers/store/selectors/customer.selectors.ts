@@ -1,11 +1,17 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
-import { CustomerState } from '../reducers/customer.reducer';
 import { getRouterState } from '../../../store';
+import {
+  CustomerState,
+  selectAll,
+  selectEntities
+} from '../reducers/customer.reducer';
 /**
  * The createFeatureSelector function selects a piece of state from the root of the state object.
  * This is used for selecting feature states that are loaded eagerly or lazily.
  */
-export const getCustomersStore = createFeatureSelector<CustomerState>('customer');
+export const getCustomersStore = createFeatureSelector<CustomerState>(
+  'customer'
+);
 
 /**
  * A selector function is a map function factory. We pass it parameters and it
@@ -16,9 +22,20 @@ export const getLoading = createSelector(
   getCustomersStore,
   store => store.loading
 );
+
+// export const getCustomers = createSelector(
+//   getCustomersStore,
+//   store => store.customers
+// );
+
 export const getCustomers = createSelector(
   getCustomersStore,
-  store => store.customers
+  selectAll
+);
+
+export const getCustomersEntities = createSelector(
+  getCustomersStore,
+  selectEntities
 );
 
 export const getSelectedCustomerId = createSelector(
@@ -29,13 +46,21 @@ export const getSelectedCustomerId = createSelector(
 export const getSelectedCustomer = createSelector(
   getCustomers,
   getSelectedCustomerId,
-  (customers, selectedCustomerId) => customers.find(c => c.id === selectedCustomerId)
+  (customers, selectedCustomerId) =>
+    customers.find(c => c.id === selectedCustomerId)
 );
 
+// export const getSelectedCustomerFromRouter = createSelector(
+//   getCustomers,
+//   getRouterState,
+//   (customers, router) =>
+//     customers.find(c => c.id.toString() === router.state.params.id) || {}
+// );
+
 export const getSelectedCustomerFromRouter = createSelector(
-  getCustomers,
+  getCustomersEntities,
   getRouterState,
-  (customers, router) => customers.find(c => c.id === +router.state.params.id) || {}
+  (entities, router) => entities[router.state.params.id]
 );
 
 export const getLoaded = createSelector(

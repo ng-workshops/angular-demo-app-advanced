@@ -1,8 +1,8 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { CustomerComponent } from './customer.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
+import { CustomerStatusPipe } from '../customer-status.pipe';
+import { CustomerComponent } from './customer.component';
 
 describe('CustomerComponent', () => {
   let component: CustomerComponent;
@@ -10,7 +10,7 @@ describe('CustomerComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [CustomerComponent],
+      declarations: [CustomerComponent, CustomerStatusPipe],
       providers: [{ provide: Router, useValue: {} }],
       schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents();

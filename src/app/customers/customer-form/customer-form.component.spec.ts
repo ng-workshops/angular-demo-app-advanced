@@ -1,13 +1,12 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { CustomerFormComponent } from './customer-form.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { Subject } from 'rxjs';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CustomerService } from '../customer.service';
-import { MatSnackBar } from '@angular/material';
 import { Store, StoreModule } from '@ngrx/store';
+import { Subject } from 'rxjs';
+import { CustomerService } from '../customer.service';
 import { CustomerState, reducer } from '../store/reducers/customer.reducer';
+import { CustomerFormComponent } from './customer-form.component';
 
 describe('CustomerFormComponent', () => {
   let component: CustomerFormComponent;

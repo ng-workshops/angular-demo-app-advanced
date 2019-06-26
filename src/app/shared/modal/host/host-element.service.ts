@@ -1,9 +1,9 @@
 import { Injectable, ViewContainerRef } from '@angular/core';
 import { ReplaySubject } from 'rxjs';
 
-Injectable({
+@Injectable({
   providedIn: 'root'
-});
+})
 export class HostElementService {
   private _hostElement = new ReplaySubject<ViewContainerRef>();
   hostElement$ = this._hostElement.asObservable();

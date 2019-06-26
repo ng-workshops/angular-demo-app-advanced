@@ -11,7 +11,11 @@ describe('AppComponent', () => {
     TestBed.configureTestingModule({
       imports: [NoopAnimationsModule],
       declarations: [AppComponent],
-      providers: [SettingsService, { provide: HttpClient, useValue: {} }, HostElementService],
+      providers: [
+        SettingsService,
+        { provide: HttpClient, useValue: {} },
+        HostElementService
+      ],
       schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents();
   }));

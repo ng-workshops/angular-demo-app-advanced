@@ -1,7 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { InfoItemComponent } from './info-item.component';
 import { FormsModule } from '@angular/forms';
+import { InfoItemComponent } from './info-item.component';
 
 describe('InfoItemComponent', () => {
   let component: InfoItemComponent;

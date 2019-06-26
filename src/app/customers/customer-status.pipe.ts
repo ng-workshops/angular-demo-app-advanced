@@ -1,8 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
-@Pipe({
-  name: 'customerStatus'
-})
+@Pipe({ name: 'customerStatus' })
 export class CustomerStatusPipe implements PipeTransform {
   transform(value: number): string {
     if (!value) {

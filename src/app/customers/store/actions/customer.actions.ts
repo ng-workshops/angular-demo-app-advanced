@@ -1,104 +1,70 @@
-import { Action } from '@ngrx/store';
+import { Update } from '@ngrx/entity';
+import { createAction, props } from '@ngrx/store';
 import { Customer } from '../../customer.model';
 
-export enum CustomerActionTypes {
-  LoadCustomers = '[Customer] Load Customers',
-  LoadCustomersSuccess = '[Customer] Load customers success',
-  LoadCustomersFail = '[Customer] Load customers fail',
-  SelectCustomer = '[Customer] Select customer',
-  AddCustomer = '[Customer] Add customer',
-  AddCustomerSuccess = '[Customer] Add customer success',
-  AddCustomerFail = '[Customer] Add customer fail',
-  UpdateCustomer = '[Customer] Update customer',
-  UpdateCustomerSuccess = '[Customer] Update customer success',
-  UpdateCustomerFail = '[Customer] Update customer fail',
-  DeleteCustomer = '[Customer] Delete customer',
-  DeleteCustomerSuccess = '[Customer] Delete customer success',
-  DeleteCustomerFail = '[Customer] Delete customer fail',
-  SearchCustomer = '[Customer] Search customer'
-}
+export const loadCustomers = createAction('[UI] Load Customers');
 
-export class LoadCustomers implements Action {
-  readonly type = CustomerActionTypes.LoadCustomers;
-}
+export const loadCustomersSuccess = createAction(
+  '[API] Load Customers Success',
+  props<{ customers: Customer[] }>()
+);
 
-export class LoadCustomersSuccess implements Action {
-  readonly type = CustomerActionTypes.LoadCustomersSuccess;
-  constructor(public payload: Customer[]) {}
-}
+export const loadCustomersFail = createAction(
+  '[Customer] Load Customers Fail',
+  props<{ err: any }>()
+);
 
-export class LoadCustomersFail implements Action {
-  readonly type = CustomerActionTypes.LoadCustomersFail;
-  constructor(public payload: any) {}
-}
+export const selectCustomer = createAction(
+  '[UI] Select customer',
+  props<{ id: number }>()
+);
 
-export class SelectCustomer implements Action {
-  readonly type = CustomerActionTypes.SelectCustomer;
-  constructor(public payload: number) {}
-}
+export const addCustomer = createAction(
+  '[UI] Add new customer',
+  props<{ customer: Customer }>()
+);
 
-export class AddCustomer implements Action {
-  readonly type = CustomerActionTypes.AddCustomer;
-  constructor(public payload: Customer) {}
-}
+export const addCustomerSuccess = createAction(
+  '[API] Add new customer success',
+  props<{ customer: Customer }>()
+);
 
-export class AddCustomerSuccess implements Action {
-  readonly type = CustomerActionTypes.AddCustomerSuccess;
-  constructor(public payload: Customer) {}
-}
+export const addCustomerFail = createAction(
+  '[API] Add new customer fail',
+  props<{ err: any }>()
+);
 
-export class AddCustomerFail implements Action {
-  readonly type = CustomerActionTypes.AddCustomerFail;
-  constructor(public payload: any) {}
-}
+export const updateCustomer = createAction(
+  '[UI] Update customer',
+  props<{ customer: Customer }>()
+);
 
-export class UpdateCustomer implements Action {
-  readonly type = CustomerActionTypes.UpdateCustomer;
-  constructor(public payload: Customer) {}
-}
+export const updateCustomerSuccess = createAction(
+  '[API] Update customer success',
+  props<{ customer: Update<Customer> }>()
+);
 
-export class UpdateCustomerSuccess implements Action {
-  readonly type = CustomerActionTypes.UpdateCustomerSuccess;
-  constructor(public payload: Customer) {}
-}
+export const updateCustomerFail = createAction(
+  '[API] Update customer fail',
+  props<{ err: any }>()
+);
 
-export class UpdateCustomerFail implements Action {
-  readonly type = CustomerActionTypes.UpdateCustomerFail;
-  constructor(public payload: any) {}
-}
+export const deleteCustomer = createAction(
+  '[UI] Delete customer',
+  props<{ id: number }>()
+);
 
-export class DeleteCustomer implements Action {
-  readonly type = CustomerActionTypes.DeleteCustomer;
-  constructor(public payload: number) {}
-}
+export const deleteCustomerSuccess = createAction(
+  '[API] Delete customer success',
+  props<{ id: number }>()
+);
 
-export class DeleteCustomerSuccess implements Action {
-  readonly type = CustomerActionTypes.DeleteCustomerSuccess;
-  constructor(public payload: number) {}
-}
+export const deleteCustomerFail = createAction(
+  '[API] Delete customer fail',
+  props<{ err: any }>()
+);
 
-export class DeleteCustomerFail implements Action {
-  readonly type = CustomerActionTypes.DeleteCustomerFail;
-  constructor(public payload: any) {}
-}
-
-export class SearchCustomer implements Action {
-  readonly type = CustomerActionTypes.SearchCustomer;
-  constructor(public payload: string) {}
-}
-
-export type CustomerActions =
-  | LoadCustomers
-  | LoadCustomersSuccess
-  | LoadCustomersFail
-  | SelectCustomer
-  | AddCustomer
-  | AddCustomerSuccess
-  | AddCustomerFail
-  | UpdateCustomer
-  | UpdateCustomerSuccess
-  | UpdateCustomerFail
-  | DeleteCustomer
-  | DeleteCustomerSuccess
-  | DeleteCustomerFail
-  | SearchCustomer;
+export const searchCustomer = createAction(
+  '[UI] Search for customer',
+  props<{ criteria: string }>()
+);

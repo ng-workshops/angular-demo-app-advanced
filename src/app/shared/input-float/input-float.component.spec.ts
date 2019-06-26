@@ -1,9 +1,7 @@
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { InputFloatComponent } from './input-float.component';
 import { FormsModule } from '@angular/forms';
-import { MatInputModule } from '@angular/material';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { InputFloatComponent } from './input-float.component';
 
 describe('InputFloatComponent', () => {
   let component: InputFloatComponent;
@@ -11,8 +9,9 @@ describe('InputFloatComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [FormsModule, MatInputModule, NoopAnimationsModule],
-      declarations: [InputFloatComponent]
+      declarations: [InputFloatComponent],
+      imports: [FormsModule],
+      schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents();
   }));
 

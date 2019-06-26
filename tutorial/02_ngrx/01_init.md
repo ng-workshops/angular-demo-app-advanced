@@ -1,10 +1,10 @@
 # 1 ngrx - Init stores
 
-https://github.com/ngrx/platform/blob/master/docs/schematics/store.md
+https://ngrx.io/guide/schematics
 
-$ ng generate store State --root --statePath store --stateInterface AppState --module app.module.ts
+> ng generate store State --root --statePath store --stateInterface AppState --module app.module.ts
 
-## store/index.ts
+## src/app/store/index.ts
 
 ```ts
 import {
@@ -26,9 +26,9 @@ export const metaReducers: MetaReducer<AppState>[] = !environment.production
   : [];
 ```
 
-$ ng generate feature customers/store/Customer --module customers/customers.module.ts --group
+> ng generate feature customers/store/Customer --module customers/customers.module.ts --group --creators
 
-## customers/store/reducers/customer.reducer.ts
+## src/app/customers/store/reducers/customer.reducer.ts
 
 ```ts
 import { Action } from '@ngrx/store';
@@ -50,26 +50,20 @@ export const initialState: CustomerState = {
   customers: []
 };
 
-export function reducer(
-  state = initialState,
-  action: CustomerActions
-): CustomerState {
-  switch (action.type) {
-    case CustomerActionTypes.LoadCustomers:
-      return {
-        ...state,
-        loading: true
-      };
+const customerReducer = createReducer(
+  initialState,
 
-    default:
-      return state;
-  }
+  on(CustomerActions.loadCustomers, state => ({ ...state, loading: true }))
+);
+
+export function reducer(state: CustomerState | undefined, action: Action) {
+  return customerReducer(state, action);
 }
 ```
 
-$ touch customers/store/selectors/customer.selectors.ts
+> touch customers/store/selectors/customer.selectors.ts
 
-## customers/store/selectors/customer.selectors.ts
+## src/app/customers/store/selectors/customer.selectors.ts
 
 ```ts
 import { createFeatureSelector, createSelector } from '@ngrx/store';
@@ -91,37 +85,47 @@ export const getLoading = createSelector(
   getCustomersStore,
   store => store.loading
 );
+
 export const getCustomers = createSelector(
   getCustomersStore,
   store => store.customers
 );
 ```
 
-## app.module.ts
+## src/app/app.module.ts
 
 ```ts
-EffectsModule.forRoot([]);
+EffectsModule.forRoot([]),
 ```
 
-## customers/store/effects/customer.effects.ts
+## src/app/customers/store/effects/customer.effects.ts
 
 ```ts
 import { Injectable } from '@angular/core';
-import { Actions, Effect, ofType } from '@ngrx/effects';
-import { CustomerActionTypes } from '../actions/customer.actions';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
+
+import { concatMap } from 'rxjs/operators';
+import { EMPTY } from 'rxjs';
+
+import * as CustomerActions from '../actions/customer.actions';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CustomerEffects {
-  // @Effect()
-  // loadFoos$ = this.actions$.pipe(ofType(CustomerActionTypes.LoadCustomers));
+  loadCustomers$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(CustomerActions.loadCustomers),
+      /** An EMPTY observable only emits completion. Replace with your own observable API request */
+      concatMap(() => EMPTY)
+    )
+  );
 
   constructor(private actions$: Actions) {}
 }
 ```
 
-## customers/customer-list/customer-list.component.ts
+## src/app/customers/customer-list/customer-list.component.ts
 
 ```ts
 constructor(
@@ -131,6 +135,6 @@ constructor(
   ) { }
 
 ngOnInit() {
-    this.store.dispatch(new LoadCustomers());
+    this.store.dispatch(loadCustomers());
   }
 ```

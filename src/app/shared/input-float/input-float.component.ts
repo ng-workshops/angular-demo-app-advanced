@@ -1,9 +1,9 @@
-import { Component, OnInit, forwardRef, Input } from '@angular/core';
+import { Component, forwardRef, Input, OnInit } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { getFloat, cutToDecimal } from '../utils/utils';
+import { cutToDecimal, getFloat } from '../utils/utils';
 
 @Component({
-  selector: 'input-float',
+  selector: 'app-input-float',
   templateUrl: './input-float.component.html',
   styleUrls: ['./input-float.component.scss'],
   providers: [

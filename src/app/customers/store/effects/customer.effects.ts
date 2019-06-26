@@ -1,119 +1,110 @@
 import { Injectable } from '@angular/core';
-import { Actions, Effect, ofType } from '@ngrx/effects';
-import { CustomerService } from '../../customer.service';
-import { switchMap, catchError, map, concatMap, tap } from 'rxjs/operators';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
-import * as fromActions from '../actions/customer.actions';
-import { MatSnackBar } from '@angular/material';
-import { Router } from '@angular/router';
-import { Go } from '../../../core/router/router.actions';
+import { catchError, concatMap, map, switchMap, tap } from 'rxjs/operators';
+import { navigate } from '../../../core/router/router.actions';
 import { ModalService } from '../../../shared/modal/modal.service';
+import { CustomerService } from '../../customer.service';
+import * as CustomerActions from '../actions/customer.actions';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CustomerEffects {
-  /*
-   * load or search all customers list and dispatch LoadCustomersSuccess action
-   */
-  @Effect()
-  loadCustomers$ = this.actions$.pipe(
-    ofType(fromActions.CustomerActionTypes.LoadCustomers, fromActions.CustomerActionTypes.SearchCustomer),
-    map((action: any) => action.payload),
-    switchMap(search => {
-      return this.customerService.getAll(search).pipe(
-        map(customers => new fromActions.LoadCustomersSuccess(customers)),
-        catchError(err => of(new fromActions.LoadCustomersFail(err)))
-      );
-    })
-  );
-
-  /*
-   * add a new customer
-   */
-  @Effect()
-  addCustomers$ = this.actions$.pipe(
-    ofType(fromActions.CustomerActionTypes.AddCustomer),
-    map((action: fromActions.AddCustomer) => action.payload),
-    concatMap(customer =>
-      this.customerService.create(customer).pipe(
-        map(newCustomer => new fromActions.AddCustomerSuccess(newCustomer)),
-        catchError(err => of(new fromActions.AddCustomerFail(err)))
-      )
+  loadCustomers$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(CustomerActions.loadCustomers, CustomerActions.searchCustomer),
+      switchMap((action: any) => {
+        return this.customerService.getAll(action.criteria).pipe(
+          map(customers => CustomerActions.loadCustomersSuccess({ customers })),
+          catchError(err => of(CustomerActions.loadCustomersFail(err)))
+        );
+      })
     )
   );
 
-  /*
-   * update a customer
-   */
-  @Effect()
-  updateCustomers$ = this.actions$.pipe(
-    ofType(fromActions.CustomerActionTypes.UpdateCustomer),
-    map((action: fromActions.UpdateCustomer) => action.payload),
-    concatMap(customer =>
-      this.customerService.update(customer).pipe(
-        map(newCustomer => new fromActions.UpdateCustomerSuccess(newCustomer)),
-        catchError(err => of(new fromActions.UpdateCustomerFail(err)))
-      )
+  addCustomers$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(CustomerActions.addCustomer),
+      concatMap(({ customer }) => {
+        return this.customerService.create(customer).pipe(
+          map(result =>
+            CustomerActions.addCustomerSuccess({ customer: result })
+          ),
+          catchError(err => of(CustomerActions.addCustomerFail(err)))
+        );
+      })
     )
   );
 
-  /*
-   * delete a customer
-   */
-  @Effect()
-  deleteCustomers$ = this.actions$.pipe(
-    ofType(fromActions.CustomerActionTypes.DeleteCustomer),
-    map((action: fromActions.DeleteCustomer) => action.payload),
-    concatMap(id =>
-      this.customerService.delete(id).pipe(
-        map(_ => new fromActions.DeleteCustomerSuccess(id)),
-        catchError(err => of(new fromActions.DeleteCustomerFail(err)))
-      )
+  updateCustomers$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(CustomerActions.updateCustomer),
+      concatMap(({ customer }) => {
+        return this.customerService.update(customer).pipe(
+          map(result =>
+            CustomerActions.updateCustomerSuccess({
+              customer: { id: customer.id, changes: result }
+            })
+          ),
+          catchError(err => of(CustomerActions.updateCustomerFail(err)))
+        );
+      })
     )
   );
 
-  /*
-   * save customer success
-   */
-  @Effect()
-  saveCustomersSuccess$ = this.actions$.pipe(
-    ofType(fromActions.CustomerActionTypes.AddCustomerSuccess, fromActions.CustomerActionTypes.UpdateCustomerSuccess),
-    map((action: fromActions.AddCustomerSuccess | fromActions.UpdateCustomer) => action.payload),
-    tap(customer => {
-      this.snackBar.open(`Customer ${customer.name} saved successfully.`, '', {
-        duration: 2000
-      });
-    }),
-    map(
-      _ =>
-        new Go({
-          path: ['/customers']
+  deleteCustomers$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(CustomerActions.deleteCustomer),
+      concatMap(({ id }) => {
+        return this.customerService.delete(id).pipe(
+          map(() => CustomerActions.deleteCustomerSuccess({ id })),
+          catchError(err => of(CustomerActions.deleteCustomerFail(err)))
+        );
+      })
+    )
+  );
+
+  saveCustomersSuccess$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(
+        CustomerActions.addCustomerSuccess,
+        CustomerActions.updateCustomerSuccess
+      ),
+      tap(({ customer }: any) => {
+        this.snackBar.open(
+          `Customer ${customer.name ||
+            customer.changes.name} saved successfully.`,
+          '',
+          {
+            duration: 2000
+          }
+        );
+      }),
+      map(() => navigate({ path: ['customers'] }))
+    )
+  );
+
+  errors$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(
+          CustomerActions.loadCustomersFail,
+          CustomerActions.addCustomerFail,
+          CustomerActions.updateCustomerFail,
+          CustomerActions.deleteCustomerFail
+        ),
+        switchMap(({ err }) => {
+          console.log('error', err);
+          return this.modalService.openGlobal({
+            title: 'App error',
+            message: (err && err.message) || 'The error message',
+            type: 'warn'
+          });
         })
-    )
-  );
-
-  /*
-   * error handler
-   */
-  @Effect({ dispatch: false })
-  errors$ = this.actions$.pipe(
-    ofType(
-      fromActions.CustomerActionTypes.LoadCustomersFail,
-      fromActions.CustomerActionTypes.AddCustomerFail,
-      fromActions.CustomerActionTypes.DeleteCustomerFail,
-      fromActions.CustomerActionTypes.UpdateCustomerFail
-    ),
-    map((action: any) => action.payload),
-    switchMap(error => {
-      console.log('error', error);
-
-      return this.modalService.openGlobal({
-        title: 'App error',
-        message: (error && error.message) || 'The error message',
-        type: 'warn'
-      });
-    })
+      ),
+    { dispatch: false }
   );
 
   constructor(

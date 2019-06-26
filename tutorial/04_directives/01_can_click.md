@@ -1,12 +1,19 @@
+# Directives
+
+> ng generate directive shared/directives/can-click --export
+
+## src/app/shared/directives/can-click.directive.ts
+
+```ts
 import {
   Directive,
-  HostListener,
   ElementRef,
-  OnInit,
+  EventEmitter,
   HostBinding,
-  Renderer2,
+  HostListener,
+  OnInit,
   Output,
-  EventEmitter
+  Renderer2
 } from '@angular/core';
 
 @Directive({
@@ -30,11 +37,38 @@ export class CanClickDirective implements OnInit {
   }
 
   ngOnInit() {
+    this.isDisabled = true;
     this.renderer.setProperty(
       this.element.nativeElement,
       'title',
       'Im Demo-Modus nicht verfügbar'
     );
-    this.isDisabled = true;
   }
 }
+```
+
+## src/app/customers/customers.module.ts
+
+```ts
+@NgModule({
+  imports: [
+    ...
+    SharedModule,
+    ...
+  ],
+})
+export class CustomersModule {}
+```
+
+## src/app/customers/customer/customer.component.html
+
+```html
+...
+
+<div class="footer">
+  ...
+  <button appCanClick mat-icon-button (canClick)="delete(customer?.id)">
+    <mat-icon>visibility_off</mat-icon>
+  </button>
+</div>
+```

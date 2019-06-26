@@ -1,7 +1,7 @@
 import { Component, ViewChild, ViewContainerRef } from '@angular/core';
+import { ModalService } from '../shared/modal/modal.service';
 import { InfoBoxComponent } from './info-box/info-box.component';
 import { MessageService } from './message.service';
-import { ModalService } from '../shared/modal/modal.service';
 
 @Component({
   selector: 'app-home',
@@ -9,14 +9,29 @@ import { ModalService } from '../shared/modal/modal.service';
   templateUrl: './home.component.html'
 })
 export class HomeComponent {
+  user = {
+    id: 1,
+    name: 'Chuck Norris',
+    showSecret: false,
+    hobbies: ['eat', 'sleep', 'drink']
+  };
+
   message = 'INIT';
   name = 'START_';
   reply = '';
 
-  @ViewChild('child')
+  @ViewChild('child', { static: false })
   private child: InfoBoxComponent;
 
-  constructor(private messageService: MessageService, private hostElement: ViewContainerRef, private modal: ModalService) {}
+  constructor(
+    private messageService: MessageService,
+    private hostElement: ViewContainerRef,
+    private modal: ModalService
+  ) {}
+
+  callMe(phone: string) {
+    alert(phone);
+  }
 
   changeChild() {
     this.message = new Date().toISOString();
@@ -36,13 +51,16 @@ export class HomeComponent {
   }
 
   openModal() {
-    const modal = this.modal.open({ message: this.name, title: 'My name is', type: 'primary' }, this.hostElement);
+    const modal = this.modal.open(
+      { message: this.name, title: 'My name is', type: 'primary' },
+      this.hostElement
+    );
 
-    modal.close.subscribe(_ => {
+    modal.close.subscribe(() => {
       console.log('MODAL closed');
     });
 
-    modal.cancel.subscribe(_ => {
+    modal.cancel.subscribe(() => {
       console.log('MODAL cancelled');
     });
   }
